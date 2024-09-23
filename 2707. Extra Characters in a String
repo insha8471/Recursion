@@ -1,0 +1,35 @@
+class Solution {
+    int[] t;
+    public int solve(int i, String s, Set<String> set, int n) {
+        if(i >= n) {
+            return 0;
+        }
+
+        if(t[i] != -1) {
+            return t[i];
+        }
+
+        int result = 1 + solve(i+1, s, set,n);
+
+        for(int j=i;j<n;j++) {
+            String subs = s.substring(i,j+1);
+            if(set.contains(subs)) {
+                result = Math.min(result, solve(j+1,s,set,n));
+            }
+        }
+
+        return t[i] = result;
+    }
+    public int minExtraChar(String s, String[] dictionary) {
+        t = new int[51];
+        Arrays.fill(t, -1);
+        int n = s.length();
+        Set<String> set = new HashSet<>();
+
+        for(String s1 : dictionary){
+            set.add(s1);
+        }
+
+        return solve(0,s,set,n);
+    }
+}
